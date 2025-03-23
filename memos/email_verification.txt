@@ -1,0 +1,16 @@
+https://laravel.com/docs/11.x/verification
+
+# EmailVerificationControllerの下記コード
+'status' => session('status')
+・EmailVerificationControllerの29行目みれば理解できる
+・要は、認証メール再送信した後に「Verification link sent!」というメッセージを送信したいだけ
+
+# EmailVerificationControllerの下記コード
+$request->fulfill() 
+・リクエストで送信された id と hash が有効であるかどうかを確認します（署名検証）。
+・指定された id に紐づいたユーザーが存在し、その hash が正しいかどうかを検証します。
+・もしリンクが正当であれば（id と hash が一致し、署名も正しい場合）、fulfill() メソッドは、ユーザーの email_verified_at フィールドに現在の時刻を設定して、そのユーザーのメールアドレスを「確認済み」とマークします。
+
+# web.phpの下記コードの「middleware('verified')」
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('verified')->name('dashboard');
+・これによってメール認証済みのユーザーじゃないとこのページを開けないようにできる
