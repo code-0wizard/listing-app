@@ -1,3 +1,19 @@
 # definePropsについて
-・親コンポーネントから子コンポーネントに変数を渡す時は、子コンポーネントでdefinePropsを定義して親コンポーネントで変数の値を記入する
+・親→子コンポーネントに変数を渡す時は、子コンポーネントでdefinePropsを定義して親コンポーネントで変数の値を記入する
 
+# space-x-6とmr-6の違い
+・mr-6：個別の右マージン
+・space-x-6：親要素 に適用し、子要素同士 の間隔を均等に設定する
+https://v3.tailwindcss.com/docs/space#add-horizontal-space-between-children
+
+# NavLink.vueの下記コードについて
+:class="{ 'bg-slate-700': $page.component === componentName }"
+・このコードの意図としては、「今いるページが例えば会員登録ページならヘッダーのRegisterボタンの周りを白くする」みたいなことをやろうとしてる
+・ちなみに、「:class」を使うことでクラス名を使い分けることができる
+
+# InputField.vueの下記コードについて
+const model = defineModel();
+・これは子コンポーネントに書くやつ
+・子コンポーネントのv-modelの値を親コンポーネントのv-modelの値と同期させるために必要な呪文みたいな
+・これによってInputタグに入力された値がRegister.vueのInputFieldのv-modelの値に代入される
+・その結果、10行目で定義されてるformに値が代入されて、送信ボタンが押された時にそれがコントローラに渡される
