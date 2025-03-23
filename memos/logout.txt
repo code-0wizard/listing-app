@@ -1,0 +1,23 @@
+# ログイン時にどうやってヘッダーの項目を出し分けしてるのか
+・HandleInertiaRequestsの下記コードに注目
+return array_merge(parent::share($request), [
+    'auth' => [
+        'user' => fn () => $request->user()
+        ? $request->user()->only('id', 'name', 'role')
+        : null,
+    ]
+]);
+・chrome拡張機能のvueでみれば分かるが、これにより非ログイン時はauth['user': null]が渡され、ログイン時はuserにユーザー情報が代入される
+・それを利用してMain.vueの8行目で下記コードでユーザー情報を取得している
+const user = computed(() => page.props.auth.user);
+
+# Main.vueの下記コードについて
+@click="show = !show"
+・これは、クリックした時にshowの値を反転させる処理を実行させてる
+
+# AuthenticateControllerのdestroyメソッドの下記コードについて
+$request->session()->invalidate();
+・現在のセッションを無効にして、セッション内のすべてのデータを削除します
+$request->session()->regenerateToken();
+・セッションに関連付けられている CSRF トークンを再生成します。
+・これにより、攻撃者が古いセッションのトークンを使って悪意のあるリクエストを送ることを防ぐことができます。
