@@ -1,0 +1,17 @@
+# AuthenticateControllerの下記コードについて
+Auth::attempt($credentials, $request->boolean('remember'))
+・多分だけど、attemptメソッドの仕様で、引数にremember:trueが来たらCookieにログイン情報を保存するみたいなことだと思う
+
+# AuthenticateControllerの下記コードについて
+return redirect()->intended('dashboard');
+・直前にアクセスしようとしていたページ があれば、そこにリダイレクトする
+・直前のページがない場合 は dashboard へ移動
+
+# AuthenticateControllerの下記コードについて
+return back()->withErrors([
+    'email' => 'The provided credentials do not match our records.'
+])->onlyInput('email');
+・back() は、リクエスト元（直前のページ）にリダイレクト する便利な Laravel のヘルパー関数(例えば、ログインページからの送信なら、ログインページに戻る)
+・withErrors()は、エラーメッセージをセッションに保存する(errors というセッションキーに カスタムエラーメッセージを追加する)
+・onlyInput('email')は、フォームに入力した email の値をセッションに保存し、再入力状態にする
+
